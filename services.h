@@ -9,7 +9,10 @@ class services{
         virtual int write_s() = 0;
         
 };
-
+//= copy 
+//!= return bool
+//== return bool
+//+ add-cost
 class sms: public services{
     public:
         sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a);

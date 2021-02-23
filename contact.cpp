@@ -100,3 +100,13 @@ user * user_db::remove_udb(){
     //this->remove(root, username);
     return this;
 }
+
+
+
+
+
+
+/*
+user(...):username(username_a)
+ 
+ */
