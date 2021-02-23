@@ -4,10 +4,8 @@
 
 class services{
     public:
-        services();
         virtual int display_s() = 0;
         virtual int write_s() = 0;
-        
 };
 //= copy 
 //!= return bool

@@ -3,18 +3,42 @@
 
 #include "contact.h"
 //base user class
-user::user(const char * username_a, int phone_a, char * email_a){
-    username = new char[strlen(username_a) +1];
-    strcpy(username, username_a);
-    phone = phone_a;
-    email = new char[strlen(email_a) + 1];
-    strcpy(email, email_a);
+user::user(){
+    username = email = NULL;
+    phone = 0;
 };
 user::~user(){
     if(username) delete [] username;
     phone = 0;
     if(email) delete [] email;
 };
+user * user::create_user(int uid_a, char * username_a, int phone_a, char * email_a){
+    this ->uid = uid_a;
+    this ->username = new char[strlen(username_a) +1];
+    strcpy(this->username, username_a);
+    this ->phone = phone_a;
+    this -> email = new char[strlen(email_a) +1];
+    strcpy(email, email_a);
+    return this;
+}
+
+user * user::add_leaf(user * new_user, user * curr){
+    //first time curr = root
+    if(new_user->uid < curr->uid){
+        if(!curr->left){
+            curr->left = new_user;
+            return curr->left;
+        }
+        return add_leaf(new_user, curr->left);
+    }
+    if(new_user->uid >= curr->uid){
+        if(!curr->right){
+            curr->right = new_user;
+            return curr->right;
+        }
+        return add_leaf(new_user, curr->right);
+    }
+}
 
 //Use inorder
 void user::display(user * curr){
@@ -52,7 +76,8 @@ user * user::update_email(char * email_a){
 };
 
 //database
-user_db::user_db(char * username_a, int phone_a, char * email_a):user(username_a, phone_a, email_a){
+user_db::user_db(){
+    root = NULL;
 };
 
 user_db::~user_db(){
@@ -61,11 +86,25 @@ user_db::~user_db(){
     }
 };
 
-int user_db::create_uid(char * username){
-    if(!username) return 0;
-    int uid = atoi(username);
+user * user_db::add_user(char * name, int phone, char * email){
+    int uid = create_uid(phone);
+
+    if(!root){
+        root->create_user(uid, name, phone, email);
+        return root;
+    }
+    else{user * new_user;
+    new_user->create_user(uid, name, phone, email);
+    new_user->add_leaf(new_user, root);
+    return new_user;
+    }
+}
+
+int user_db::create_uid(int phone){
+    int uid = (phone * 7) % 1000;
     return uid;
 }
+
 
 void user_db::display_userdb(){
     if(!root){

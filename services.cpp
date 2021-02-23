@@ -2,6 +2,7 @@
 */
 
 #include "services.h"
+
 sms::sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a){
     sender_phone = sender_phone_a;
     reciever_phone = reciever_phone_a;

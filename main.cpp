@@ -1,17 +1,23 @@
 /*Jack Wanitkun CS202 Program#3
 */
-#include<iostream>
-#include<cstring> 
-#include<cctype>
+#include "contact.h"
+
 using namespace std;
 
 int menu();
+int create_user(user_db & db_obj);
 
 int main(){
-    int answer;
+    int ans = 0;
+    user_db db_obj;
     cout << "Welcome to Jack Wanitkun Program 3" << endl;
     cout << "Choose your options" << endl;
-
+    do{
+        ans = menu();
+        if(ans == 1){
+            create_user(db_obj);
+        }
+    }while(ans != 9);
     return 0;
 }
 
@@ -29,3 +35,17 @@ int menu(){
     cin >> ans; cin.ignore(100,'\n');
     return ans;
 }
+
+int create_user(user_db & db_obj){
+    char username[40];
+    int phone;
+    char email[40];
+    cout << "Your name: ";
+    cin.get(username, 40); cin.ignore(100,'\n');
+    cout << "Your phone number: ";
+    cin >> phone; cin.ignore(100,'\n');
+    cout << "Your email: ";
+    cin.get(email,40); cin.ignore(100,'\n');
+    db_obj.add_user(username, phone, email);
+    //db_obj.display_userdb();
+};
