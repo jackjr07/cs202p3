@@ -17,6 +17,12 @@ int main(){
         if(ans == 1){
             create_user(db_obj);
         }
+        if(ans == 2){
+            db_obj.display_userdb();
+        }
+        if(ans == 3){
+            db_obj.update_udb();
+        }
     }while(ans != 9);
     return 0;
 }
@@ -24,7 +30,10 @@ int main(){
 int menu(){
     int ans;
     cout << "[1] Create User\n";
-    cout << "[2] Update User\n";
+    cout << "[2] Display all user\n";
+    cout << "[3] Update User\n";
+    cout << "[4] Remove User\n";
+
     cout << "[3] Update your service\n";
     cout << "[4] Send messages\n";
     cout << "[5] Display all messages\n";

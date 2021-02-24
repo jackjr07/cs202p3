@@ -16,13 +16,13 @@ class user{
         user * create_user(int uid, char * username_a, int phone_a, char * email_a);
         user * add_leaf(user * new_user, user * curr);
         void display(user * curr);
-        user * update_phone(int phone_a);
-        user * update_email(char * email_a);
+        user * update_phone(user * curr, int uid, int phone_a);
+        user * update_email(user * curr, int uid, char * email_a);
         //int  remove(user * curr, char * username_r); // Wait for imp
         int add_service();
         int remove_service();
 
-        friend ostream &operator << (ostream & output, const user &user_out);
+        friend ostream &operator << (ostream & output, const user * user_out);
         int uid;
 
     private:
