@@ -23,7 +23,7 @@ class user{
         int display(user * curr);
         user * update_phone(user * curr, int uid, int phone_a);
         user * update_email(user * curr, int uid, char * email_a);
-        int  remove(user * curr, int uid);
+        int  remove(user *& curr, int uid);
         int add_service();
         int remove_service();
 
@@ -34,6 +34,7 @@ class user{
         int uid;
 
     private:
+        int remove_p(user * hold, user * curr, int uid);
         char * username;
         int phone;
         char * email;
