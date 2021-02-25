@@ -1,4 +1,5 @@
 /*Jack Wanitkun CS202 Program#3
+ * Updated from BST to LLL
 */
 
 #include "contact.h"
@@ -6,12 +7,18 @@
 user::user(){
     username = email = NULL;
     uid = phone = 0;
+    next = NULL;
 }
 
 user::~user(){
     if(username) delete [] username;
     uid = phone = 0;
     if(email) delete [] email;
+    if(next){
+        user * temp = new user();
+        delete next;
+        next = temp;
+    }
 }
 
 user * user::create_user(int uid_a, char * username_a, int phone_a, char * email_a){
@@ -22,37 +29,25 @@ user * user::create_user(int uid_a, char * username_a, int phone_a, char * email
     this ->phone = phone_a;
     this -> email = new char[strlen(email_a) +1];
     strcpy(email, email_a);
-
+    this ->next = NULL;
     return this;
 }
 
 user * user::add_leaf(user * new_user, user * curr){
-    //first time curr = root
-    if(new_user->uid < curr->uid){
-        if(!curr->left){
-            curr->left = new_user;
-            return curr->left;
-        }
-        return add_leaf(new_user, curr->left);
+    if(!curr && !new_user) return 0;
+    if(curr->next){
+        return add_leaf(new_user, curr->next);
     }
-    else if(new_user->uid >= curr->uid){
-        if(!curr->right){
-            curr->right = new_user;
-            return curr->right;
-        }
-        return add_leaf(new_user, curr->right);
-    }
+    curr->next = new user();
+    curr->next = new_user;
+
+    return curr->next;
 }
 
-//Use inorder
-void user::display(user * curr){
-    if(curr->left){
-        return display(curr->left);
-    }
+int user::display(user * curr){
+    if(!curr)return 0;
     cout << curr << endl;
-    if(curr->right){
-        return display(curr->right);
-    }
+    return display(curr->next);
 }
 
 //Operation overload from^^^^^^^^^^^^
@@ -61,35 +56,60 @@ ostream &operator<<( ostream &output, const user * user_out){
    return output;
 }
 
+user * user::operator=(const user& user_c){
+    username = new char[strlen(user_c.username) +1];
+    phone = user_c.phone;
+    email = new char[strlen(user_c.email)+1];
+    next = NULL;
+    return this;
+};
+
 
 user * user::update_phone(user * curr, int uid, int phone_a){
   if(!curr) return 0;
-  if(curr->uid == uid){
+
+  if(uid != curr->uid){
+        return update_phone(curr->next, uid, phone_a);
+  }
     cout << "Current: \n" << curr << endl;
     curr->phone = phone_a;
     cout << "Update: \n" << curr << endl; // use operator overload
     return curr;
-  }
-  //Inorder
-  if(uid < curr->uid){
-    return update_phone(curr->left, uid, phone_a);
-  }else{
-    return update_phone(curr->right, uid, phone_a);
-  }
 }
 
 user * user::update_email(user * curr, int uid, char * email_a){
-    if(curr->uid == uid){
+    if(!curr) return 0;
+    if(uid != curr->uid){
+        return update_email(curr->next, uid, email_a);
+    }
+    cout << "Current: \n" << curr << endl;
     delete [] curr->email;
     curr -> email = new char[strlen(email_a)+1];
     strcpy(curr->email, email_a);
+    cout << "Update: \n" << curr << endl; //use operator overload
+    return curr;
+}
+
+int user::remove(user * curr, int uid){
+    cout << curr << endl;
+   if(!curr) return 0;
+   if(curr->uid != uid){
+        return remove(curr->next, uid);
+   }
+   if(curr->uid == uid){
+       if(!curr->next){
+            user * temp = NULL;
+            delete curr;
+            curr = temp;
+            return 2;
+       }else{
+           user * temp = curr->next;
+           delete curr;
+           curr = temp;
+            return 3;
+       }
     }
-    if(uid < curr->uid){
-      return update_email(curr->left, uid, email_a);
-    }else{
-      return update_email(curr->right, uid, email_a);
-    }
-    return this;
+   return 1;
 }
 
 /////////////////////database///////////////////////////
@@ -155,10 +175,11 @@ user * user_db::update_udb(){
 }
 
 user * user_db::remove_udb(){
-    char username[30];
-    cout << "What username you want to remove: ";
-    cin.get(username, 30); cin.ignore(100,'\n');
-    //this->remove(root, username);
+    int uid_r;
+    cout << "What phone number account you want to remove: ";
+    cin >> uid_r; cin.ignore(100, '\n');
+    uid_r = create_uid(uid_r);
+    this->remove(root, uid_r);
     return this;
 }
 
