@@ -18,12 +18,12 @@ class user{
         //copy constructor
         //user(const user & user_obj);
 
-        user * create_user(int uid, char * username_a, int phone_a, char * email_a);
+        user * create_user(char * username_a, int phone_a, char * email_a);
         user * add_leaf(user * new_user, user * curr);
         int display(user * curr);
-        user * update_phone(user * curr, int uid, int phone_a);
-        user * update_email(user * curr, int uid, char * email_a);
-        int  remove(user *& head, int uid);
+        user * update_phone(user * curr, int phone, int phone_a);
+        user * update_email(user * curr, int phone, char * email_a);
+        int  remove(user *& head, int phone);
         int add_service();
         int remove_service();
 
@@ -31,10 +31,8 @@ class user{
         user * operator=(const user& user_c);
         //overwrite cout 
         friend ostream &operator << (ostream & output, const user * user_out);
-        int uid;
-
     private:
-        int remove_p(user *& curr, user *& hold, int uid);
+        int remove_p(user *& curr, user *& hold, int phone);
         char * username;
         int phone;
         char * email;
@@ -47,7 +45,6 @@ class user_db: public user{
         user_db();
         ~user_db();
 
-        int create_uid(int phone);
         user * add_user(char * name, int phone,char * email);
         user * user_cmp();
         void display_userdb();

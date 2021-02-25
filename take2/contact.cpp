@@ -6,13 +6,13 @@
 //base user class
 user::user(){
     username = email = NULL;
-    uid = phone = 0;
+    phone = 0;
     next = NULL;
 }
 
 user::~user(){
     if(username) delete [] username;
-    uid = phone = 0;
+    phone = 0;
     if(email) delete [] email;
     if(next){
         user * temp = new user();
@@ -21,9 +21,8 @@ user::~user(){
     }
 }
 
-user * user::create_user(int uid_a, char * username_a, int phone_a, char * email_a){
+user * user::create_user(char * username_a, int phone_a, char * email_a){
 
-    this ->uid = uid_a;
     this ->username = new char[strlen(username_a) +1];
     strcpy(this->username, username_a);
     this ->phone = phone_a;
@@ -65,11 +64,11 @@ user * user::operator=(const user& user_c){
 };
 
 
-user * user::update_phone(user * curr, int uid, int phone_a){
+user * user::update_phone(user * curr, int phone, int phone_a){
   if(!curr) return 0;
 
-  if(uid != curr->uid){
-        return update_phone(curr->next, uid, phone_a);
+  if(phone != curr->phone){
+        return update_phone(curr->next, phone, phone_a);
   }
     cout << "Current: \n" << curr << endl;
     curr->phone = phone_a;
@@ -77,10 +76,10 @@ user * user::update_phone(user * curr, int uid, int phone_a){
     return curr;
 }
 
-user * user::update_email(user * curr, int uid, char * email_a){
+user * user::update_email(user * curr, int phone, char * email_a){
     if(!curr) return 0;
-    if(uid != curr->uid){
-        return update_email(curr->next, uid, email_a);
+    if(phone != curr->phone){
+        return update_email(curr->next, phone, email_a);
     }
     cout << "Current: \n" << curr << endl;
     delete [] curr->email;
@@ -90,9 +89,9 @@ user * user::update_email(user * curr, int uid, char * email_a){
     return curr;
 }
 
-int user::remove(user *& head, int uid){
+int user::remove(user *& head, int phone){
     if(!head) return 0;
-    if(head->uid == uid){
+    if(head->phone == phone){
         if(!head->next){
           delete head;
         }else{
@@ -101,18 +100,18 @@ int user::remove(user *& head, int uid){
           head = temp;
         }
     }
-    return remove_p(head, head->next, uid);
+    return remove_p(head, head->next, phone);
 }
-int user::remove_p(user *& curr, user *& hold, int uid){
+int user::remove_p(user *& curr, user *& hold, int phone){
     if(!curr) return 0;
-    cout << curr->uid << endl;
-    cout << hold->uid << endl;
+    cout << curr->phone << endl;
+    cout << hold->phone << endl;
     /*if(hold->uid == uid){
         curr->next = hold->next;
         delete hold;
     }
     */
-    return remove_p(curr->next, hold->next, uid);
+    return remove_p(curr->next, hold->next, phone);
 }
 
 /////////////////////database///////////////////////////
@@ -127,25 +126,18 @@ user_db::~user_db(){
 }
 
 user * user_db::add_user(char * name, int phone, char * email){
-    int uid = create_uid(phone);
     if(!root){
         cout << "Start that root" << endl;
         root = new user();
-        root->create_user(uid, name, phone, email);
+        root->create_user(name, phone, email);
         return root;
     }
     cout << "Passed to leaf" << endl;
     user * new_user = new user();
-    new_user->create_user(uid, name, phone, email);
+    new_user->create_user(name, phone, email);
     new_user->add_leaf(new_user, root);
     return new_user;
 }
-
-int user_db::create_uid(int phone){
-    int uid = (phone * 7) % 1000;
-    return uid;
-}
-
 
 void user_db::display_userdb(){
     if(!root){
@@ -156,33 +148,31 @@ void user_db::display_userdb(){
 
 user * user_db::update_udb(){
     int ans;
-    int uid;
+    int phone;
     cout << "What is the current phone number that you want to update: ";
-    cin >> uid; cin.ignore(100, '\n');
-    uid = create_uid(uid);
+    cin >> phone; cin.ignore(100, '\n');
     cout << "Do you want to update [1]Phone number or [2] Email: ";
     cin >> ans; cin.ignore(100, '\n');
     if(ans == 1){
-        int phone;
+        int phone_a;
         cout << "New Phone#: ";
-        cin >> phone; cin.ignore(100,'\n');
-        this->update_phone(root, uid, phone);
+        cin >> phone_a; cin.ignore(100,'\n');
+        this->update_phone(root, phone, phone_a);
     }
     if(ans == 2){
         char email[30];
         cout << "New email: ";
         cin.get(email, 30); cin.ignore(100,'\n');
-        this->update_email(root, uid, email);
+        this->update_email(root, phone, email);
     }
     return this;
 }
 
 user * user_db::remove_udb(){
-    int uid_r;
+    int phone;
     cout << "What phone number account you want to remove: ";
-    cin >> uid_r; cin.ignore(100, '\n');
-    uid_r = create_uid(uid_r);
-    this->remove(root, uid_r);
+    cin >> phone; cin.ignore(100, '\n');
+    this->remove(root, phone);
     return this;
 }
 
