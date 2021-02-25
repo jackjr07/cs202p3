@@ -90,29 +90,29 @@ user * user::update_email(user * curr, int uid, char * email_a){
     return curr;
 }
 
-int user::remove(user *& curr, int uid){
-   if(!curr) return 0;
-    cout << curr << endl;
-    if(curr->uid != uid || curr->next->uid != uid){
-        return remove(curr->next, uid);
-    }
-    //Only match
-    if(curr->uid == uid){
-        if(!curr->next){
-            delete curr;
-            curr = NULL;
+int user::remove(user *& head, int uid){
+    if(!head) return 0;
+    if(head->uid == uid){
+        if(!head->next){
+          delete head;
         }else{
-            curr = curr->next;
+          user * temp = head->next;
+          delete head;
+          head = temp;
         }
     }
-    if(curr->next->uid == uid){
-        if(!curr->next->next){
-            curr->next = NULL;
-        }else{
-            curr->next = curr->next->next;
-        }
+    return remove_p(head, head->next, uid);
+}
+int user::remove_p(user *& curr, user *& hold, int uid){
+    if(!curr) return 0;
+    cout << curr->uid << endl;
+    cout << hold->uid << endl;
+    /*if(hold->uid == uid){
+        curr->next = hold->next;
+        delete hold;
     }
-    return 1;
+    */
+    return remove_p(curr->next, hold->next, uid);
 }
 
 /////////////////////database///////////////////////////
