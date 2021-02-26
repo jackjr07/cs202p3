@@ -55,11 +55,13 @@ ostream &operator<<( ostream &output, const user * user_out){
    return output;
 }
 
-user * user::operator=(const user& user_c){
-    username = new char[strlen(user_c.username) +1];
-    phone = user_c.phone;
-    email = new char[strlen(user_c.email)+1];
-    next = NULL;
+user * user::operator=(const user *& user_c){
+    username = new char[strlen(user_c->username) +1];
+    strcpy(username, user_c->username);
+    phone = user_c->phone;
+    email = new char[strlen(user_c->email)+1];
+    strcpy(email, user_c->email);
+    next = user_c->next;
     return this;
 };
 
@@ -91,26 +93,27 @@ user * user::update_email(user * curr, int phone, char * email_a){
 
 int user::remove(user *& head, int phone){
     if(!head) return 0;
+    if(head->phone != phone){
+        return remove_p(head, head->next, phone);
+    }
     if(head->phone == phone){
-        if(!head->next){
-          delete head;
+        if(head->next){
+            head = head->next;
+            cout << head << endl;
+            return 1;
         }else{
-          user * temp = head->next;
-          delete head;
-          head = temp;
+            delete head;
+            head = NULL;
+            return 2;
         }
     }
-    return remove_p(head, head->next, phone);
+    return 1;
 }
 int user::remove_p(user *& curr, user *& hold, int phone){
     if(!curr) return 0;
     cout << curr->phone << endl;
+    if(!curr->next) return 0;
     cout << hold->phone << endl;
-    /*if(hold->uid == uid){
-        curr->next = hold->next;
-        delete hold;
-    }
-    */
     return remove_p(curr->next, hold->next, phone);
 }
 

@@ -15,8 +15,6 @@ class user{
     public: 
         user();
         ~user();
-        //copy constructor
-        //user(const user & user_obj);
 
         user * create_user(char * username_a, int phone_a, char * email_a);
         user * add_leaf(user * new_user, user * curr);
@@ -28,7 +26,7 @@ class user{
         int remove_service();
 
         //overwrite assignment for copy constructor
-        user * operator=(const user& user_c);
+        user * operator=(const user *& user_c);
         //overwrite cout 
         friend ostream &operator << (ostream & output, const user * user_out);
     private:
