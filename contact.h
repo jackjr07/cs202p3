@@ -1,8 +1,6 @@
 /*Jack Wanitkun CS202 Program#3
 */
-#include<iostream>
-#include<cstring>
-#include<cctype>
+#include "services.h"
 
 using namespace std;
 
@@ -22,7 +20,8 @@ class user{
         //int  remove(user * curr, char * username_r); // Wait for imp
         user *  remove(user *& root, int uid);
         user * min(user * curr); //inorder successor
-        int add_service();
+        user * find_user(user * curr, int uid);
+        int service(int ans);
         int remove_service();
 
         //overwrite assignment for copy constructor
@@ -37,6 +36,7 @@ class user{
         char * email;
         user * left;
         user * right;
+        services * head;
 };
 
 //This will act like a node
@@ -51,6 +51,7 @@ class user_db: public user{
         void display_userdb();
         user * update_udb();
         user * remove_udb();
+        int add_service();
 
     private:
         user * root;

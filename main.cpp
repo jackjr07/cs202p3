@@ -26,6 +26,9 @@ int main(){
         if(ans == 4){
             db_obj.remove_udb();
         }
+        if(ans == 5){
+            db_obj.add_service();
+        }
     }while(ans != 9);
     return 0;
 }
@@ -37,7 +40,7 @@ int menu(){
     cout << "[3] Update User\n";
     cout << "[4] Remove User\n";
 
-    cout << "[3] Update your service\n";
+    cout << "[5] add your service\n";
     cout << "[4] Send messages\n";
     cout << "[5] Display all messages\n";
 

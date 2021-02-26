@@ -1,11 +1,20 @@
 /*Jack Wanitkun CS202 Program#3
 */
-#include "contact.h"
+#include<iostream>
+#include<cstring>
+#include<cctype>
+
+using namespace std;
+
+class sms;
+
 
 class services{
     public:
+        services();
+        ~services();
         virtual int display_s() = 0;
-        virtual int write_s() = 0;
+        services * next;
 };
 //= copy 
 //!= return bool
@@ -15,9 +24,8 @@ class sms: public services{
     public:
         sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a);
         ~sms();
-        //virtual int display_s();
+        virtual int display_s();
         friend ostream &operator<<( ostream &output, const sms & sms_out);
-        //virtual int write_s();
         friend istream &operator>>(istream & input, sms & sms_send);
     private:
         int sender_phone;

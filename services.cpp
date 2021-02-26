@@ -3,6 +3,16 @@
 
 #include "services.h"
 
+services::services(){
+    next = NULL;
+}
+
+services::~services(){
+    if(next){
+        next = NULL;
+    }
+}
+
 sms::sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a){
     sender_phone = sender_phone_a;
     reciever_phone = reciever_phone_a;
@@ -15,6 +25,13 @@ sms::sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a){
 sms::~sms(){
     sender_phone = reciever_phone = cost = 0;
     delete [] text; 
+}
+
+int sms::display_s(){
+    cout << "sender: " << sender_phone << endl;
+    cout << "Reciever: " << reciever_phone << endl;
+    cout << "Msg: " << text << endl;
+    cout << "Cost: " << cost << endl;
 }
 
 ostream &operator << (ostream &output, const sms & sms_out){

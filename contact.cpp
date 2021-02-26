@@ -8,6 +8,7 @@ user::user(){
     uid = phone = 0;
     left = NULL;
     right = NULL;
+    head = NULL;
 }
 
 user::~user(){
@@ -22,6 +23,7 @@ user::~user(){
         delete right;
         right = NULL;
     }
+    head = NULL;
 }
 
 user * user::create_user(int uid_a, char * username_a, int phone_a, char * email_a){
@@ -34,6 +36,7 @@ user * user::create_user(int uid_a, char * username_a, int phone_a, char * email
     strcpy(email, email_a);
     this->left = NULL;
     this->right = NULL;
+    head = NULL;
     return this;
 }
 
@@ -83,6 +86,8 @@ user * user::operator=(const user *& user_c){
     strcpy(email, user_c->email);
     left = user_c->left;
     right = user_c->right;
+    head = user_c->head;
+
     return this;
 };
 
@@ -155,6 +160,37 @@ user * user::min(user * curr){
     }
     return curr;
 }
+
+user * user::find_user(user * curr, int uid){
+    if(curr->uid == uid){
+        return curr;
+    }
+    if(uid < curr->uid){
+        curr->left = find_user(curr->left, uid);
+    }else{
+        curr->right = find_user(curr->right, uid);
+    }
+}
+
+int user::service(int ans){
+    //[1] sms, [2] email, [3] wk
+    if(ans == 1){
+        int send_to;
+        char msg[200];
+        double cost;
+        cout << "What number you want to send sms to: " << endl;
+        cin >> send_to; cin.ignore(100,'\n');
+        cout << "What message you want to sent to: " << endl;
+        cin.get(msg,200); cin.ignore(100, '\n');
+        cost = strlen(msg)+1;
+        cost = cost * 0.1;
+
+        this->head = new sms(this->phone, send_to, msg, cost);
+        this->head->display_s();
+        cout << this->head << endl;
+    }
+}
+
 /////////////////////database///////////////////////////
 user_db::user_db(){
     root = NULL;
@@ -226,8 +262,21 @@ user * user_db::remove_udb(){
     return this;
 }
 
+int user_db::add_service(){
+    int ans;
+    int uid;
+    cout << "What is your current phone number: ";
+    cin >> uid; cin.ignore(100,'\n');
+    uid = create_uid(uid);
+    cout << "What kind of service you want to linked to this phone number?\n";
+    cout << "[1] sms\n [2] Email\n [3] Walkie Talkie\n Answer: ";
+    cin >> ans; cin.ignore(100,'\n');
+    if(ans == 1){
+        user * curr = find_user(root, uid);        
+        curr->service(ans);
+    }
 
-
+}
 
 
 
