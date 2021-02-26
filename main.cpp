@@ -29,6 +29,9 @@ int main(){
         if(ans == 5){
             db_obj.add_service();
         }
+        if(ans == 6){
+            db_obj.display_services();
+        }
     }while(ans != 9);
     return 0;
 }
@@ -41,8 +44,7 @@ int menu(){
     cout << "[4] Remove User\n";
 
     cout << "[5] add your service\n";
-    cout << "[4] Send messages\n";
-    cout << "[5] Display all messages\n";
+    cout << "[6] Display all messages\n";
 
     cout << "[9] Exit\n";
     

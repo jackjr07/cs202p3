@@ -23,6 +23,7 @@ class user{
         user * find_user(user * curr, int uid);
         int service(int ans);
         int remove_service();
+        int display_all_s(user * curr);
 
         //overwrite assignment for copy constructor
         user * operator=(const user *& user_c);
@@ -31,6 +32,7 @@ class user{
 
         int uid;
     private:
+        int display_all_s(services * curr);
         char * username;
         int phone;
         char * email;
@@ -52,6 +54,7 @@ class user_db: public user{
         user * update_udb();
         user * remove_udb();
         int add_service();
+        void display_services();
 
     private:
         user * root;

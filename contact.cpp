@@ -184,11 +184,29 @@ int user::service(int ans){
         cin.get(msg,200); cin.ignore(100, '\n');
         cost = strlen(msg)+1;
         cost = cost * 0.1;
-
-        this->head = new sms(this->phone, send_to, msg, cost);
-        this->head->display_s();
-        cout << this->head << endl;
+        //Add at head
+        if(!this->head){
+          this->head = new sms(this->phone, send_to, msg, cost);
+          cout << this->head << endl;
+        }
+        if(this->head){
+            services * temp = this->head;
+            temp->get_last();
+            temp->next = new sms(this->phone, send_to, msg, cost);
+            cout << temp->next << endl;
+        }
     }
+}
+
+int user::display_all_s(user * curr){
+        if(!curr) return 0;
+            return display_all_s(curr->head->next);
+}
+
+int user::display_all_s(services * curr){
+      if(!curr) return 0;
+      cout << curr << endl;
+      return display_all_s(curr->next);
 }
 
 /////////////////////database///////////////////////////
@@ -276,6 +294,16 @@ int user_db::add_service(){
         curr->service(ans);
     }
 
+}
+
+void user_db::display_services(){
+    int phone;
+    int uid;
+    cout << "What is your current phone number: ";
+    cin >> uid; cin.ignore(100,'\n');
+    uid = create_uid(uid);
+    user * curr = find_user(root, uid);
+    curr->display_all_s(curr);
 }
 
 

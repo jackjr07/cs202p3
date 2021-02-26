@@ -13,6 +13,18 @@ services::~services(){
     }
 }
 
+services * services::get_last(){
+    if(this->next){
+      return this->next->get_last();
+    }
+    return this;
+};
+
+ostream &operator << (ostream &output, const services * data){
+    data->display_s();
+    return output;
+};
+
 sms::sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a){
     sender_phone = sender_phone_a;
     reciever_phone = reciever_phone_a;
@@ -27,19 +39,13 @@ sms::~sms(){
     delete [] text; 
 }
 
-int sms::display_s(){
+void sms::display_s() const {
     cout << "sender: " << sender_phone << endl;
     cout << "Reciever: " << reciever_phone << endl;
     cout << "Msg: " << text << endl;
     cout << "Cost: " << cost << endl;
 }
 
-ostream &operator << (ostream &output, const sms & sms_out){
-    output << "Sender: " << sms_out.sender_phone << endl;
-    output << "Reciever: " << sms_out.reciever_phone << endl;
-    output << "Text: " << sms_out.text << endl;
-    return output;
-};
 
 /////////////EMAIL/////////////
 

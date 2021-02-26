@@ -13,9 +13,13 @@ class services{
     public:
         services();
         ~services();
-        virtual int display_s() = 0;
+        virtual void display_s() const = 0;
+        friend ostream &operator<<( ostream &output, const services * data);
+        services * get_last();
         services * next;
 };
+
+
 //= copy 
 //!= return bool
 //== return bool
@@ -24,8 +28,8 @@ class sms: public services{
     public:
         sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a);
         ~sms();
-        virtual int display_s();
-        friend ostream &operator<<( ostream &output, const sms & sms_out);
+        virtual void display_s() const;
+        //friend ostream &operator<<( ostream &output, const sms * sms_out);
         friend istream &operator>>(istream & input, sms & sms_send);
     private:
         int sender_phone;
