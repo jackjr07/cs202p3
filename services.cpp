@@ -40,6 +40,7 @@ sms::~sms(){
 }
 
 void sms::display_s() const {
+    cout << "Your sms " <<endl;
     cout << "sender: " << sender_phone << endl;
     cout << "Reciever: " << reciever_phone << endl;
     cout << "Msg: " << text << endl;
@@ -49,20 +50,21 @@ void sms::display_s() const {
 
 /////////////EMAIL/////////////
 
-email::email(int sender_email_a, int reciever_email_a, char * text_a){
+emails::emails(int sender_email_a, int reciever_email_a, char * text_a){
     sender_email = sender_email_a;
-    reciever_email = sender_email_a;
+    reciever_email = reciever_email_a;
     text = new char[strlen(text_a)+1];
     strcpy(text, text_a);
     next = NULL;
 }
 
-email::~email(){
+emails::~emails(){
     sender_email = reciever_email = 0;
     delete [] text;
 }
 
-void email::display_s() const {
+void emails::display_s() const {
+    cout << "Your Email" << endl;
     cout << "Sender: " << sender_email << endl;
     cout << "Reciever: " << reciever_email << endl;
     cout << "Msg: " << text << endl;
@@ -79,7 +81,8 @@ wk::~wk(){
     push_from = push_to = code = 0;
 }
 
-void wk::display_s(){
+void wk::display_s() const{
+    cout << "Your Walkie Talkie" << endl;
     cout << "Code Push from: " << push_from << endl;
     cout << "Code Push to: " << push_to << endl;
     cout << "Secret Code: " << code << endl;

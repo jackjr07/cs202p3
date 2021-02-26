@@ -5,11 +5,11 @@
 #include<cctype>
 
 using namespace std;
-
+/*
 class sms;
 class email;
 class wk;
-
+*/
 
 class services{
     public:
@@ -35,12 +35,13 @@ class sms: public services{
         services * next;
 };
 
-class email: public services
+class emails: public services
 {
     public:
-        email(int sender_email, int reciever_email, char * text);
-        ~email();
-        virtual void display_s() const ;
+        emails();
+        emails(int sender_email_a, int reciever_email_a, char * text_a);
+        ~emails();
+        virtual void display_s() const;
     private:
         int sender_email;
         int reciever_email;
@@ -52,7 +53,7 @@ class wk: public services{
     public:
         wk(int push_from, int push_to, int code);
         ~wk();
-        virtual void display_s();
+        virtual void display_s() const;
         friend istream &operator>>(istream & input, sms & wk_in);
     private:
         int push_from;

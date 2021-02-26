@@ -89,7 +89,11 @@ user * user::operator=(const user *& user_c){
     head = user_c->head;
 
     return this;
-};
+}
+
+double user::operator+=(const int text_lenght){
+    return text_lenght * 2;
+}
 
 user * user::update_phone(user * curr, int uid, int phone_a){
   if(!curr) return 0;
@@ -177,13 +181,15 @@ int user::service(int ans){
     if(ans == 1){
         int send_to;
         char msg[200];
-        double cost;
+        double cost = 1;
         cout << "What number you want to send sms to: " << endl;
         cin >> send_to; cin.ignore(100,'\n');
         cout << "What message you want to sent to: " << endl;
         cin.get(msg,200); cin.ignore(100, '\n');
-        cost = strlen(msg)+1;
-        cost = cost * 0.1;
+        int text_len = strlen(msg)+1;
+        cout << text_len << endl;
+        cost+=text_len;
+
         //Add at head
         if(!this->head){
           this->head = new sms(this->phone, send_to, msg, cost);
@@ -201,21 +207,42 @@ int user::service(int ans){
     if(ans == 2){
         int send_to;
         char msg[200];
-        cout << "What number you want to send email to: "<<endl;
+        cout << "What number you want to send email to: ";
         cin >> send_to; cin.ignore(100,'\n');
+        cout << "What is your email text: " ;
         cin.get(msg,200); cin.ignore(100, '\n');
         if(!this->head){
-            this->head = new email(this->phone, send_to, msg);
+            this->head = new emails(this->phone, send_to, msg);
+            cout << this->head << endl;
+            return 21;
+        }
+        if(this->head){
+            services * temp = this->head;
+            temp->get_last();
+            temp->next = new emails(this->phone, send_to, msg);
+            cout << temp->next << endl;
+            return 22;
         }
     }
     if(ans == 3){
-    int push_to;
-    int code;
-    cout << "What number you want to send a secret code to: ";
-    cin >> push_to; cin.ignore(100,'\n');
-    cout << "What is the secret code[int]: ";
-    cin >> code; cin.ignore(100,'\n');
-    this->head = new wk(this->phone, push_to, code);
+        int push_to;
+        int code;
+        cout << "What number you want to send a secret code to: ";
+        cin >> push_to; cin.ignore(100,'\n');
+        cout << "What is the secret code[int]: ";
+        cin >> code; cin.ignore(100,'\n');
+        if(!this->head){
+          this->head = new wk(this->phone, push_to, code);
+          cout << this->head << endl;
+          return 31;
+        }
+        if(this->head){
+          services * temp = this->head;
+          temp->get_last();
+          temp->next = new wk(this->phone, push_to, code);
+          cout << temp->next << endl;;
+          return 32;
+        }
     }
 }
 
@@ -311,7 +338,7 @@ int user_db::add_service(){
     cout << "[1] sms\n [2] Email\n [3] Walkie Talkie\n Answer: ";
     cin >> ans; cin.ignore(100,'\n');
     user * curr = find_user(root, uid);        
-    curr->service(ans)        
+    curr->service(ans);
     return 11;
 }
 

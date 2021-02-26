@@ -22,13 +22,16 @@ class user{
         user * min(user * curr); //inorder successor
         user * find_user(user * curr, int uid);
         int service(int ans);
-        int remove_service();
         int display_all_s(user * curr);
 
         //overwrite assignment for copy constructor
         user * operator=(const user *& user_c);
         //overwrite cout 
         friend ostream &operator << (ostream & output, const user * user_out);
+        //overwrite float for cost of sms
+        //create cost for sms
+        double operator+=(const int text_length);
+
 
         int uid;
     private:
