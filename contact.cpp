@@ -188,19 +188,33 @@ int user::service(int ans){
         if(!this->head){
           this->head = new sms(this->phone, send_to, msg, cost);
           cout << this->head << endl;
+          return 11;
         }
         if(this->head){
             services * temp = this->head;
             temp->get_last();
             temp->next = new sms(this->phone, send_to, msg, cost);
             cout << temp->next << endl;
+            return 12;
+        }
+    }
+    if(ans == 2){
+        int send_to;
+        char msg[200];
+        cout << "What number you want to send email to: "<<endl;
+        cin >> send_to; cin.ignore(100,'\n');
+        send_to = send_to.create_uid(send_to);
+        cout << "What message you want to sent to: " << endl;
+        cin.get(msg,200); cin.ignore(100, '\n');
+        if(!this->head){
+          this -> head = new email(this->phone, send_to, msg);
         }
     }
 }
 
 int user::display_all_s(user * curr){
         if(!curr) return 0;
-            return display_all_s(curr->head->next);
+            return display_all_s(curr->head);
 }
 
 int user::display_all_s(services * curr){
@@ -289,11 +303,9 @@ int user_db::add_service(){
     cout << "What kind of service you want to linked to this phone number?\n";
     cout << "[1] sms\n [2] Email\n [3] Walkie Talkie\n Answer: ";
     cin >> ans; cin.ignore(100,'\n');
-    if(ans == 1){
-        user * curr = find_user(root, uid);        
-        curr->service(ans);
-    }
-
+    user * curr = find_user(root, uid);        
+    curr->service(ans)        
+    return 11;
 }
 
 void user_db::display_services(){
