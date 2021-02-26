@@ -203,12 +203,19 @@ int user::service(int ans){
         char msg[200];
         cout << "What number you want to send email to: "<<endl;
         cin >> send_to; cin.ignore(100,'\n');
-        send_to = send_to.create_uid(send_to);
-        cout << "What message you want to sent to: " << endl;
         cin.get(msg,200); cin.ignore(100, '\n');
         if(!this->head){
-          this -> head = new email(this->phone, send_to, msg);
+            this->head = new email(this->phone, send_to, msg);
         }
+    }
+    if(ans == 3){
+    int push_to;
+    int code;
+    cout << "What number you want to send a secret code to: ";
+    cin >> push_to; cin.ignore(100,'\n');
+    cout << "What is the secret code[int]: ";
+    cin >> code; cin.ignore(100,'\n');
+    this->head = new wk(this->phone, push_to, code);
     }
 }
 

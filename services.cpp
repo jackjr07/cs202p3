@@ -49,11 +49,38 @@ void sms::display_s() const {
 
 /////////////EMAIL/////////////
 
-email::email(char * sender_email_a, char * reciever_email_a, char * text_a){
-    sender_email = new char[strlen(sender_email_a)+1];
-    strcpy(sender_email, sender_email_a);
-    reciever_email = new char[strlen(reciever_email_a) +1];
-    strcpy(reciever_email, reciever_email_a);
+email::email(int sender_email_a, int reciever_email_a, char * text_a){
+    sender_email = sender_email_a;
+    reciever_email = sender_email_a;
     text = new char[strlen(text_a)+1];
     strcpy(text, text_a);
+    next = NULL;
+}
+
+email::~email(){
+    sender_email = reciever_email = 0;
+    delete [] text;
+}
+
+void email::display_s() const {
+    cout << "Sender: " << sender_email << endl;
+    cout << "Reciever: " << reciever_email << endl;
+    cout << "Msg: " << text << endl;
+}
+
+wk::wk(int push_from_a, int push_to_a, int code_a){
+    push_from = push_from_a;
+    push_to = push_to_a;
+    code = code_a;
+    next = NULL;
+}
+
+wk::~wk(){
+    push_from = push_to = code = 0;
+}
+
+void wk::display_s(){
+    cout << "Code Push from: " << push_from << endl;
+    cout << "Code Push to: " << push_to << endl;
+    cout << "Secret Code: " << code << endl;
 }

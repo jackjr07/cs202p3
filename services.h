@@ -7,6 +7,8 @@
 using namespace std;
 
 class sms;
+class email;
+class wk;
 
 
 class services{
@@ -20,17 +22,11 @@ class services{
 };
 
 
-//= copy 
-//!= return bool
-//== return bool
-//+ add-cost
 class sms: public services{
     public:
         sms(int sender_phone_a, int reciever_phone_a, char * text_a, int cost_a);
         ~sms();
         virtual void display_s() const;
-        //friend ostream &operator<<( ostream &output, const sms * sms_out);
-        friend istream &operator>>(istream & input, sms & sms_send);
     private:
         int sender_phone;
         int reciever_phone;
@@ -42,14 +38,12 @@ class sms: public services{
 class email: public services
 {
     public:
-        email(char * sender_email, char * reciever_email, char * text);
+        email(int sender_email, int reciever_email, char * text);
         ~email();
-        //virtual int display_s();
-        friend ostream &operator<<( ostream &output, const email & email_out);
-        friend istream &operator>>(istream & input, sms & email_in);
+        virtual void display_s() const ;
     private:
-        char * sender_email;
-        char * reciever_email;
+        int sender_email;
+        int reciever_email;
         char * text;
         services * next;
 };
@@ -58,9 +52,7 @@ class wk: public services{
     public:
         wk(int push_from, int push_to, int code);
         ~wk();
-        //virtual int display_s();
-        friend ostream &operator<<( ostream &output, const wk & wk_out);
-        //virtual int write_s();
+        virtual void display_s();
         friend istream &operator>>(istream & input, sms & wk_in);
     private:
         int push_from;
