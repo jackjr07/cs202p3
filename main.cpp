@@ -23,6 +23,9 @@ int main(){
         if(ans == 3){
             db_obj.update_udb();
         }
+        if(ans == 4){
+            db_obj.remove_udb();
+        }
     }while(ans != 9);
     return 0;
 }

@@ -13,18 +13,24 @@ class user{
     public: 
         user();
         ~user();
+
         user * create_user(int uid, char * username_a, int phone_a, char * email_a);
         user * add_leaf(user * new_user, user * curr);
         void display(user * curr);
         user * update_phone(user * curr, int uid, int phone_a);
         user * update_email(user * curr, int uid, char * email_a);
         //int  remove(user * curr, char * username_r); // Wait for imp
+        user *  remove(user *& root, int uid);
+        user * min(user * curr); //inorder successor
         int add_service();
         int remove_service();
 
+        //overwrite assignment for copy constructor
+        user * operator=(const user *& user_c);
+        //overwrite cout 
         friend ostream &operator << (ostream & output, const user * user_out);
-        int uid;
 
+        int uid;
     private:
         char * username;
         int phone;
